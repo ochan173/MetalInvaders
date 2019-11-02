@@ -1,63 +1,74 @@
-$(document).bind('mousemove', function(e) {
-  $('#metal').css({
-    left: e.pageX + 5,
-    top: e.pageY - 40,
-  });
-});
+initGame();
+setInterval(NotePlayer, 3000);
 
 
-function genertateNote() {
+
+/**
+ * Permet de déterminer la prochaine note à invoquer
+ */
+function NotePlayer() {
+  if(Math.random() * 10 + 1 > 9) {
+    generateNoteDouble();
+  } 
+  else {
+    generateNoteSimple();
+  }
+}
+
+/**
+ * Permet de générer une note double sur le tableau de jeu
+ */
+function generateNoteDouble() {
   var div = document.createElement("div");
   div.innerHTML = "🎵";
   div.className = "double";
-  // div.style.cssText = 'left:' + (Math.random() * jQuery(window).width()) + ';';
-  div.style.cssText = 'left:300px';
+  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -15) + 'px;';
 
-  console.log(div);
-  return div;
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 70}, 3000);
 }
-// $('#noteDouble').animate({top: jQuery(window).height() - 65}, 3000);
 
-// $('#noteSimple').animate({top: jQuery(window).height() - 80}, 5000);
+/**
+ * Permet de générer une note simple sur le tableau de jeu
+ */
+function generateNoteSimple() {
+  var div = document.createElement("div");
+  div.innerHTML = "𝅘𝅥𝅮";
+  div.className = "simple";
+  div.onmouseover = retirerNote();
+  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -10) + 'px;';
 
-// document.createElement('#noteDouble', function(e) {
-//   $('#noteDouble').animate({top: jQuery(window).height() - 65}, 3000);
-// });
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 3000);
+}
 
-// setInterval(function() {
-//   $('body').add($div, function() {
-//     $($div).css({
-//       left: Math.random() * jQuery(window).width()
-//     });
-//   }).animate({top: jQuery(window).height() - 65}, 3000);
-// }, 1000);
+function retirerNote() {
+  console.log("TEST HOVER");
+}
 
-// setInterval(function() {
-//   $('body').add(genertateNote()).animate({top: jQuery(window).height() - 65}, 3000);
-// }, 1000);
+/**
+ * Initialise les paramètres pour le jeu
+ */
+function initGame() {
+  bindMouse();
+  remouveRightclickMenu();
+}
 
-console.log(
-
-  $('body').add(genertateNote()).animate({top: jQuery(window).height() - 65}, 3000)
-  );
-
-
-// setInterval(function() {
-// ('#noteDouble', function() {
-//     $('#noteDouble').css({
-//       left: Math.random() * jQuery(window).width()
-//     });
-//   }).appendTo('body').animate({top: jQuery(window).height() - 65}, 3000);
-// }, 1000);
-
-//  $("body").add('#noteDouble', function() {
-//   $('#noteDouble').css({
-//     left: (Math.random() * jQuery(window).width()) - 10
-//   });
-// }).animate({top: jQuery(window).height() - 65}, 3000);
-
-$("body").add('.simple', function() {
-  $('#noteSimple').css({
-    left: (Math.random() * jQuery(window).width()) - 10
+/**
+ * Attache l'élément qui suivra le curseur au curseur
+ */
+function bindMouse(){
+  $(document).bind('mousemove', function(e) {
+    $('#metal').css({
+      left: e.pageX + 5,
+      top: e.pageY - 40,
+    });
   });
-}).animate({top: jQuery(window).height() - 80}, 3000);
+}
+
+/**
+ * Retirer le menu contextuel du click droit de la souris
+ */
+function remouveRightclickMenu() {
+  $(document).contextmenu(function() {
+    return false;
+  });
+}
