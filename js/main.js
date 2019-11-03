@@ -58,8 +58,10 @@ function generateNoteSimple() {
   $(div).bind(verifierMouseOver(div));
 }
 
-function retirerNote(note) {
-  $(note).fadeOut(200);
+function retirerNote(div) {
+  $(div).fadeOut(400, function() {
+    $(div).remove();
+  });
 }
 
 /**
