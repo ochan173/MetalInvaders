@@ -1,16 +1,17 @@
 initGame();
 setInterval(NotePlayer, 3000);
 
-
+$( '.simple' ).hover(function() {
+  retirerNote();
+});
 
 /**
  * Permet de déterminer la prochaine note à invoquer
  */
 function NotePlayer() {
-  if(Math.random() * 10 + 1 > 9) {
+  if (Math.random() * 10 + 1 > 9) {
     generateNoteDouble();
-  } 
-  else {
+  } else {
     generateNoteSimple();
   }
 }
@@ -19,11 +20,10 @@ function NotePlayer() {
  * Permet de générer une note double sur le tableau de jeu
  */
 function generateNoteDouble() {
-  var div = document.createElement("div");
-  div.innerHTML = "🎵";
-  div.className = "double";
+  div = document.createElement('div');
+  div.innerHTML = '🎵';
+  div.className = 'double';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -15) + 'px;';
-
   $(div).appendTo('body').animate({top: jQuery(window).height() - 70}, 3000);
 }
 
@@ -31,17 +31,17 @@ function generateNoteDouble() {
  * Permet de générer une note simple sur le tableau de jeu
  */
 function generateNoteSimple() {
-  var div = document.createElement("div");
-  div.innerHTML = "𝅘𝅥𝅮";
-  div.className = "simple";
-  div.onmouseover = retirerNote();
+  div = document.createElement('div');
+  div.innerHTML = '𝅘𝅥𝅮';
+  div.className = 'simple';
+  // div.mouseover = retirerNote();
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -10) + 'px;';
 
   $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 3000);
 }
 
 function retirerNote() {
-  console.log("TEST HOVER");
+  $('.simple').fadeOut(200);
 }
 
 /**
@@ -55,11 +55,11 @@ function initGame() {
 /**
  * Attache l'élément qui suivra le curseur au curseur
  */
-function bindMouse(){
+function bindMouse() {
   $(document).bind('mousemove', function(e) {
     $('#metal').css({
       left: e.pageX + 5,
-      top: e.pageY - 40,
+      top: e.pageY - 20,
     });
   });
 }
