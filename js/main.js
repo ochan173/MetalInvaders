@@ -1,7 +1,7 @@
 initGame();
-setInterval(NotePlayer, 3000);
+setInterval(NotePlayer, 1000);
 
-$( '.simple' ).hover(function() {
+$( '.double' ).dblclick(function() {
   retirerNote();
 });
 
@@ -14,6 +14,13 @@ function NotePlayer() {
   } else {
     generateNoteSimple();
   }
+}
+
+function verifierMouseOver(div) {
+  $(div).mouseover(function() {
+    $(div).stop();
+    retirerNote(div);
+  });
 }
 
 /**
@@ -36,12 +43,12 @@ function generateNoteSimple() {
   div.className = 'simple';
   // div.mouseover = retirerNote();
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -10) + 'px;';
-
   $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 3000);
+  $(div).bind(verifierMouseOver(div));
 }
 
-function retirerNote() {
-  $('.simple').fadeOut(200);
+function retirerNote(note) {
+  $(note).fadeOut(200);
 }
 
 /**
@@ -59,7 +66,7 @@ function bindMouse() {
   $(document).bind('mousemove', function(e) {
     $('#metal').css({
       left: e.pageX + 5,
-      top: e.pageY - 20,
+      top: e.pageY - 15,
     });
   });
 }
