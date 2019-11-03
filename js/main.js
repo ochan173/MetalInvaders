@@ -1,10 +1,6 @@
 initGame();
 setInterval(NotePlayer, 1000);
 
-$( '.double' ).dblclick(function() {
-  retirerNote();
-});
-
 /**
  * Permet de déterminer la prochaine note à invoquer
  */
@@ -16,8 +12,23 @@ function NotePlayer() {
   }
 }
 
+/**
+ * Vérifie si l'élément se fait hover par la souris
+ * @param {*} div Élément à vérifier
+ */
 function verifierMouseOver(div) {
   $(div).mouseover(function() {
+    $(div).stop();
+    retirerNote(div);
+  });
+}
+
+/**
+ * Vérifie si l'élément se fait double clique par la souris
+ * @param {*} div Élément à vérifier
+ */
+function verifierDblClick(div) {
+  $(div).dblclick(function() {
     $(div).stop();
     retirerNote(div);
   });
@@ -32,6 +43,7 @@ function generateNoteDouble() {
   div.className = 'double';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -15) + 'px;';
   $(div).appendTo('body').animate({top: jQuery(window).height() - 70}, 3000);
+  $(div).bind(verifierDblClick(div));
 }
 
 /**
@@ -41,7 +53,6 @@ function generateNoteSimple() {
   div = document.createElement('div');
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple';
-  // div.mouseover = retirerNote();
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -10) + 'px;';
   $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 3000);
   $(div).bind(verifierMouseOver(div));
