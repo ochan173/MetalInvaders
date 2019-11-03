@@ -3,8 +3,10 @@ interval = 1000;
 intervalId = 0;
 initGame();
 
+/**
+ * Commence un nouvel intervalle de temps pour ajouter des notes
+ */
 function startInterval() {
-  // Store the id of the interval so we can clear it later
   intervalId = setInterval(notePlayer, interval);
 }
 
@@ -20,7 +22,9 @@ function notePlayer() {
   }
 }
 
-
+/**
+ * Réduit l'intervalle d'apparition des notes
+ */
 function reduireInterval() {
   if (interval > 100) {
     interval -= 75;
@@ -61,7 +65,10 @@ function generateNoteDouble() {
   div.innerHTML = '🎵';
   div.className = 'double';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 30) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000);
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000, function() {
+    $(div).unbind(verifierDblClick(div));
+    retirerPoints(div.innerHTML);
+  });
   $(div).bind(verifierDblClick(div));
 }
 
@@ -73,7 +80,10 @@ function generateNoteSimple() {
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000);
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000, function() {
+    $(div).unbind(verifierMouseOver(div));
+    retirerPoints(div.innerHTML);
+  });
   $(div).bind(verifierMouseOver(div));
 }
 
@@ -81,7 +91,7 @@ function generateNoteSimple() {
  * Génère le texte qui affiche le pointage
  */
 function genererPointage() {
-  $('#pointage').text(pts + '   int : ' + interval);
+  $('#pointage').text(pts);
   $('#pointage').css({
     fontSize: 30,
     paddingLeft: 10,
@@ -107,9 +117,22 @@ function ajouterPoints(points) {
 }
 
 /**
+ * Retire des points au joueur
+ * @param {*} note
+ */
+function retirerPoints(note) {
+  if (note == '𝅘𝅥𝅮') {
+    pts -= 20;
+  } else {
+    pts -= 200;
+  }
+}
+
+/**
  * Initialise les paramètres pour le jeu
  */
 function initGame() {
+  console.log($( document ).height());
   bindMouse();
   remouveRightclickMenu();
   startInterval();
