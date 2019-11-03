@@ -1,14 +1,31 @@
+pts = 0;
+interval = 1000;
+intervalId = 0;
 initGame();
-setInterval(NotePlayer, 1000);
+
+function startInterval() {
+  // Store the id of the interval so we can clear it later
+  intervalId = setInterval(notePlayer, interval);
+}
 
 /**
  * Permet de déterminer la prochaine note à invoquer
  */
-function NotePlayer() {
+function notePlayer() {
+  genererPointage();
   if (Math.random() * 10 + 1 > 9) {
     generateNoteDouble();
   } else {
     generateNoteSimple();
+  }
+}
+
+
+function reduireInterval() {
+  if (interval > 100) {
+    interval -= 75;
+    clearInterval(intervalId);
+    startInterval(interval);
   }
 }
 
@@ -19,6 +36,7 @@ function NotePlayer() {
 function verifierMouseOver(div) {
   $(div).mouseover(function() {
     $(div).stop();
+    ajouterPoints(20);
     retirerNote(div);
   });
 }
@@ -30,6 +48,7 @@ function verifierMouseOver(div) {
 function verifierDblClick(div) {
   $(div).dblclick(function() {
     $(div).stop();
+    ajouterPoints(50);
     retirerNote(div);
   });
 }
@@ -41,8 +60,8 @@ function generateNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
   div.className = 'double';
-  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -15) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 70}, 3000);
+  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 30) + 'px;';
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000);
   $(div).bind(verifierDblClick(div));
 }
 
@@ -53,15 +72,38 @@ function generateNoteSimple() {
   div = document.createElement('div');
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple';
-  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() -10) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 3000);
+  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000);
   $(div).bind(verifierMouseOver(div));
 }
 
+/**
+ * Génère le texte qui affiche le pointage
+ */
+function genererPointage() {
+  $('#pointage').text(pts + '   int : ' + interval);
+  $('#pointage').css({
+    fontSize: 30,
+    paddingLeft: 10,
+  });
+}
+
+/**
+ * Retire une note du jeu
+ * @param {*} div Note à retirer
+ */
 function retirerNote(div) {
   $(div).fadeOut(400, function() {
     $(div).remove();
   });
+}
+
+/**
+ * Ajoute des points au joueur
+ * @param {*} points Nombre de points à ajouter
+ */
+function ajouterPoints(points) {
+  pts += points;
 }
 
 /**
@@ -70,6 +112,8 @@ function retirerNote(div) {
 function initGame() {
   bindMouse();
   remouveRightclickMenu();
+  startInterval();
+  setInterval(reduireInterval, 3000);
 }
 
 /**
