@@ -15,10 +15,14 @@ function startInterval() {
  */
 function notePlayer() {
   genererPointage();
-  if (Math.random() * 10 + 1 > 9) {
-    generateNoteDouble();
+  if (!verifierFinDePartie()) {
+    if (Math.random() * 10 + 1 > 9) {
+      generateNoteDouble();
+    } else {
+      generateNoteSimple();
+    }
   } else {
-    generateNoteSimple();
+    finirPartie();
   }
 }
 
@@ -31,6 +35,11 @@ function reduireInterval() {
     clearInterval(intervalId);
     startInterval(interval);
   }
+}
+
+function finirPartie() {
+  $('.simple').stop();
+  $('.double').stop();
 }
 
 /**
@@ -57,6 +66,10 @@ function verifierDblClick(div) {
   });
 }
 
+function verifierFinDePartie() {
+  return pts < 0;
+}
+
 /**
  * Permet de générer une note double sur le tableau de jeu
  */
@@ -64,8 +77,8 @@ function generateNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
   div.className = 'double';
-  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 30) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000, function() {
+  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 20) + 'px;';
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 5000, function() {
     $(div).unbind(verifierDblClick(div));
     retirerPoints(div.innerHTML);
   });
@@ -83,6 +96,7 @@ function generateNoteSimple() {
   $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000, function() {
     $(div).unbind(verifierMouseOver(div));
     retirerPoints(div.innerHTML);
+    div.classList.add('test');
   });
   $(div).bind(verifierMouseOver(div));
 }
@@ -123,8 +137,10 @@ function ajouterPoints(points) {
 function retirerPoints(note) {
   if (note == '𝅘𝅥𝅮') {
     pts -= 20;
-  } else {
+    console.log('simple -20');
+  } else if (note == '🎵') {
     pts -= 200;
+    console.log('simple -200');
   }
 }
 
