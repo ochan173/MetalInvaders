@@ -39,9 +39,10 @@ function reduireInterval() {
 function finirPartie() {
   $('.simple').stop().unbind(verifierMouseEnter());
   $('.double').stop().unbind(verifierDblClick());
-  $('.enJeu').fadeOut(200, function() {
+  $('.enJeu').fadeOut(300, function() {
     $('.enJeu').remove();
   });
+// afficherGameOver();
 }
 
 /**
@@ -149,10 +150,8 @@ function ajouterPoints(points) {
 function retirerPoints(note) {
   if (note == '𝅘𝅥𝅮') {
     pts -= 20;
-    console.log('simple -20');
   } else if (note == '🎵') {
     pts -= 200;
-    console.log('double -200');
   }
   genererPointage();
 }
@@ -161,7 +160,6 @@ function retirerPoints(note) {
  * Initialise les paramètres pour le jeu
  */
 function initGame() {
-  console.log($( document ).height());
   bindMouse();
   remouveRightclickMenu();
   genererPointage();
