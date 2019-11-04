@@ -14,7 +14,6 @@ function startInterval() {
  * Permet de déterminer la prochaine note à invoquer
  */
 function notePlayer() {
-  genererPointage();
   if (!verifierFinDePartie()) {
     if (Math.random() * 10 + 1 > 9) {
       generateNoteDouble();
@@ -38,16 +37,19 @@ function reduireInterval() {
 }
 
 function finirPartie() {
-  $('.simple').stop();
-  $('.double').stop();
+  $('.simple').stop().unbind(verifierMouseEnter());
+  $('.double').stop().unbind(verifierDblClick());
+  $('.enJeu').fadeOut(200, function() {
+    $('.enJeu').remove();
+  });
 }
 
 /**
  * Vérifie si l'élément se fait hover par la souris
  * @param {*} div Élément à vérifier
  */
-function verifierMouseOver(div) {
-  $(div).mouseover(function() {
+function verifierMouseEnter(div) {
+  $(div).mouseenter(function() {
     $(div).stop();
     ajouterPoints(20);
     retirerNote(div);
@@ -76,12 +78,9 @@ function verifierFinDePartie() {
 function generateNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
-  div.className = 'double';
+  div.className = 'double enJeu';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 20) + 'px;';
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 5000, function() {
-    $(div).unbind(verifierDblClick(div));
-    retirerPoints(div.innerHTML);
-  });
+  animerDouble(div);
   $(div).bind(verifierDblClick(div));
 }
 
@@ -91,14 +90,26 @@ function generateNoteDouble() {
 function generateNoteSimple() {
   div = document.createElement('div');
   div.innerHTML = '𝅘𝅥𝅮';
-  div.className = 'simple';
+  div.className = 'simple enJeu';
   div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
+  animerSimple(div);
+  $(div).bind(verifierMouseEnter(div));
+}
+
+function animerSimple(div) {
   $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000, function() {
-    $(div).unbind(verifierMouseOver(div));
     retirerPoints(div.innerHTML);
-    div.classList.add('test');
+    $(div).removeClass('enJeu');
+    $(div).unbind(verifierMouseEnter(div));
   });
-  $(div).bind(verifierMouseOver(div));
+}
+
+function animerDouble(div) {
+  $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000, function() {
+    retirerPoints(div.innerHTML);
+    $(div).removeClass('enJeu');
+    $(div).unbind(verifierDblClick(div));
+  });
 }
 
 /**
@@ -128,6 +139,7 @@ function retirerNote(div) {
  */
 function ajouterPoints(points) {
   pts += points;
+  genererPointage();
 }
 
 /**
@@ -140,8 +152,9 @@ function retirerPoints(note) {
     console.log('simple -20');
   } else if (note == '🎵') {
     pts -= 200;
-    console.log('simple -200');
+    console.log('double -200');
   }
+  genererPointage();
 }
 
 /**
@@ -151,6 +164,7 @@ function initGame() {
   console.log($( document ).height());
   bindMouse();
   remouveRightclickMenu();
+  genererPointage();
   startInterval();
   setInterval(reduireInterval, 3000);
 }
