@@ -16,9 +16,9 @@ function startInterval() {
 function notePlayer() {
   if (!verifierFinDePartie()) {
     if (Math.random() * 10 + 1 > 9) {
-      generateNoteDouble();
+      genererNoteDouble();
     } else {
-      generateNoteSimple();
+      genererNoteSimple();
     }
   } else {
     finirPartie();
@@ -37,6 +37,7 @@ function reduireInterval() {
 }
 
 function finirPartie() {
+  clearInterval(intervalId);
   $('.simple').stop().unbind(verifierMouseEnter());
   $('.double').stop().unbind(verifierDblClick());
   $('.enJeu').fadeOut(300, function() {
@@ -46,7 +47,7 @@ function finirPartie() {
 }
 
 function afficherGameOver() {
-  $('<div class="gameOver>Game Over</div>"').appendTo('body');
+  $('<div class="gameOver">Game Over</div>').appendTo('body');
 }
 
 /**
@@ -80,7 +81,7 @@ function verifierFinDePartie() {
 /**
  * Permet de générer une note double sur le tableau de jeu
  */
-function generateNoteDouble() {
+function genererNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
   div.className = 'double enJeu';
@@ -92,7 +93,7 @@ function generateNoteDouble() {
 /**
  * Permet de générer une note simple sur le tableau de jeu
  */
-function generateNoteSimple() {
+function genererNoteSimple() {
   div = document.createElement('div');
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple enJeu';
@@ -101,6 +102,10 @@ function generateNoteSimple() {
   $(div).bind(verifierMouseEnter(div));
 }
 
+/**
+ * Anime une note simple 
+ * @param {*} div Note à animer
+ */
 function animerSimple(div) {
   $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000, function() {
     retirerPoints(div.innerHTML);
@@ -109,6 +114,10 @@ function animerSimple(div) {
   });
 }
 
+/**
+ * Anime une note double
+ * @param {*} div Note à animer
+ */
 function animerDouble(div) {
   $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000, function() {
     retirerPoints(div.innerHTML);
