@@ -117,6 +117,13 @@ textarea {
     position: absolute;
   }
 
+  .gameOver {
+    width: 250px;
+    height: 200px;
+    color: white;
+    background-color: red;
+  }
+
 
 /* ==========================================================================
    Helper classes

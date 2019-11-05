@@ -42,7 +42,11 @@ function finirPartie() {
   $('.enJeu').fadeOut(300, function() {
     $('.enJeu').remove();
   });
-// afficherGameOver();
+  afficherGameOver();
+}
+
+function afficherGameOver() {
+  $('<div class="gameOver>Game Over</div>"').appendTo('body');
 }
 
 /**
