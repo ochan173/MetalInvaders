@@ -7,7 +7,12 @@ initGame();
  * Commence un nouvel intervalle de temps pour ajouter des notes
  */
 function startInterval() {
-  intervalId = setInterval(notePlayer, interval);
+  console.log(intervalId);
+  if (!verifierFinDePartie()) {
+    intervalId = setInterval(notePlayer, interval);
+  } else {
+    clearInterval(intervalId);
+  }
 }
 
 /**
@@ -47,7 +52,7 @@ function finirPartie() {
 }
 
 function afficherGameOver() {
-  $('<div class="gameOver">Game Over</div>').appendTo('body');
+  $('<div class="gameOver"><div class="texte">Game Over</div></div>').appendTo('body');
 }
 
 /**
@@ -85,7 +90,7 @@ function genererNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
   div.className = 'double enJeu';
-  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 20) + 'px;';
+  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 10) + 'px;';
   animerDouble(div);
   $(div).bind(verifierDblClick(div));
 }
@@ -97,13 +102,28 @@ function genererNoteSimple() {
   div = document.createElement('div');
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple enJeu';
-  div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
+  // div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
+  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 10) + 'px;';
   animerSimple(div);
   $(div).bind(verifierMouseEnter(div));
 }
 
+function genererNoteSimple2() {
+  note = $('body').append('<div class="simple enJeu">𝅘𝅥𝅮</div>')
+      .css({left: Math.random() * window.innerWidth});
+  animerSimple2(note);
+}
+
+function animerSimple2(div) {
+  div.animate({top: jQuery(window).height() - 90}, 4000, 'linear', function() {
+    retirerPoints(div.innerHTML);
+    $(div).removeClass('enJeu');
+    $(div).unbind(verifierMouseEnter(div));
+  });
+}
+
 /**
- * Anime une note simple 
+ * Anime une note simple
  * @param {*} div Note à animer
  */
 function animerSimple(div) {
