@@ -90,7 +90,7 @@ function genererNoteDouble() {
   div = document.createElement('div');
   div.innerHTML = '🎵';
   div.className = 'double enJeu';
-  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 10) + 'px;';
+  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 25) + 'px;';
   animerDouble(div);
   $(div).bind(verifierDblClick(div));
 }
@@ -103,19 +103,19 @@ function genererNoteSimple() {
   div.innerHTML = '𝅘𝅥𝅮';
   div.className = 'simple enJeu';
   // div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
-  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 10) + 'px;';
+  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 25) + 'px;';
   animerSimple(div);
   $(div).bind(verifierMouseEnter(div));
 }
 
 function genererNoteSimple2() {
   note = $('body').append('<div class="simple enJeu">𝅘𝅥𝅮</div>')
-      .css({left: Math.random() * window.innerWidth});
+      .css({left: Math.random() * window.innerWidth} + 'px;');
   animerSimple2(note);
 }
 
 function animerSimple2(div) {
-  div.animate({top: jQuery(window).height() - 90}, 4000, 'linear', function() {
+  div.animate({top: jQuery(window).height() - 90}, 4000, function() {
     retirerPoints(div.innerHTML);
     $(div).removeClass('enJeu');
     $(div).unbind(verifierMouseEnter(div));
