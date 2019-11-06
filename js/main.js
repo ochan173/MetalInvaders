@@ -62,7 +62,7 @@ function afficherGameOver() {
 function verifierMouseEnter(div) {
   $(div).mouseenter(function() {
     $(div).stop();
-    ajouterPoints(20);
+    ajouterPoints(10);
     retirerNote(div);
   });
 }
@@ -79,6 +79,9 @@ function verifierDblClick(div) {
   });
 }
 
+/**
+ * Méthode qui vérifie si le pointage du joueur est inférieur à 0
+ */
 function verifierFinDePartie() {
   return pts < 0;
 }
@@ -87,39 +90,18 @@ function verifierFinDePartie() {
  * Permet de générer une note double sur le tableau de jeu
  */
 function genererNoteDouble() {
-  div = document.createElement('div');
-  div.innerHTML = '🎵';
-  div.className = 'double enJeu';
-  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 25) + 'px;';
-  animerDouble(div);
-  $(div).bind(verifierDblClick(div));
+  note = $('<div class="double enJeu">🎵</div>').appendTo('body').css({'left':(Math.random() * window.innerWidth - 25) + 'px', 'font-size': 50 + 'px', 'position': 'absolute'});
+  $(note).bind(verifierDblClick(note));
+  animerDouble(note);
 }
 
 /**
  * Permet de générer une note simple sur le tableau de jeu
  */
 function genererNoteSimple() {
-  div = document.createElement('div');
-  div.innerHTML = '𝅘𝅥𝅮';
-  div.className = 'simple enJeu';
-  // div.style.cssText = 'left:' + (Math.random() * jQuery(window).width() - 25) + 'px;';
-  div.style.cssText = 'left:' + (Math.random() * window.innerWidth - 25) + 'px;';
-  animerSimple(div);
-  $(div).bind(verifierMouseEnter(div));
-}
-
-function genererNoteSimple2() {
-  note = $('body').append('<div class="simple enJeu">𝅘𝅥𝅮</div>')
-      .css({left: Math.random() * window.innerWidth} + 'px;');
-  animerSimple2(note);
-}
-
-function animerSimple2(div) {
-  div.animate({top: jQuery(window).height() - 90}, 4000, function() {
-    retirerPoints(div.innerHTML);
-    $(div).removeClass('enJeu');
-    $(div).unbind(verifierMouseEnter(div));
-  });
+  note = $('<div class="simple enJeu">𝅘𝅥𝅮</div>').appendTo('body').css({'left':(Math.random() * window.innerWidth - 25) + 'px', 'font-size': 70 + 'px', 'position': 'absolute'});
+  $(note).bind(verifierMouseEnter(note));
+  animerSimple(note);
 }
 
 /**
@@ -127,8 +109,8 @@ function animerSimple2(div) {
  * @param {*} div Note à animer
  */
 function animerSimple(div) {
-  $(div).appendTo('body').animate({top: jQuery(window).height() - 90}, 4000, function() {
-    retirerPoints(div.innerHTML);
+  div.animate({top: jQuery(window).height() - 90}, 4000, function() {
+    retirerPoints(div.text());
     $(div).removeClass('enJeu');
     $(div).unbind(verifierMouseEnter(div));
   });
@@ -140,7 +122,7 @@ function animerSimple(div) {
  */
 function animerDouble(div) {
   $(div).appendTo('body').animate({top: jQuery(window).height() - 80}, 5000, function() {
-    retirerPoints(div.innerHTML);
+    retirerPoints(div.text());
     $(div).removeClass('enJeu');
     $(div).unbind(verifierDblClick(div));
   });
