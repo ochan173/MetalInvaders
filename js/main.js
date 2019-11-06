@@ -1,3 +1,9 @@
+/**
+ * Jeu de METAL INVADERS
+ * 
+ * @author David Goulet-Paradis, Olivier Chan
+ */
+
 pts = 0;
 interval = 1000;
 intervalId = 0;
@@ -41,6 +47,9 @@ function reduireInterval() {
   }
 }
 
+/**
+ * Termine la partie courante
+ */
 function finirPartie() {
   clearInterval(intervalId);
   $('.simple').stop().unbind(verifierMouseEnter());
@@ -51,6 +60,9 @@ function finirPartie() {
   afficherGameOver();
 }
 
+/**
+ * Affiche le message de game over
+ */
 function afficherGameOver() {
   $('<div class="gameOver"><div class="texte">Game Over</div></div>').appendTo('body');
 }
